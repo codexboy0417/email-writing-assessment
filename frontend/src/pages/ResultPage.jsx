@@ -85,11 +85,14 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
         </div>
 
         <div style={{
-          background: 'rgba(255, 255, 255, 0.75)',
-          border: '1px solid rgba(228, 233, 246, 0.9)',
+          background: 'var(--glass-card-bg)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid var(--glass-card-border)',
           borderRadius: '16px',
           padding: '16px 24px',
-          textAlign: 'right'
+          textAlign: 'right',
+          boxShadow: 'var(--shadow-card)'
         }}>
           <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 700, display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Total Cumulative Points
