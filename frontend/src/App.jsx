@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header.jsx';
 import Sidebar from './components/Sidebar.jsx';
+import FallingColorBackground from './components/FallingColorBackground.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import AssessmentPage from './pages/AssessmentPage.jsx';
 import ResultPage from './pages/ResultPage.jsx';
@@ -51,10 +52,8 @@ export default function App() {
 
   return (
     <>
-      {/* Warm ambient background lighting matching executive dashboard */}
-      <div className="ambient-glow-left-warm" />
-      <div className="ambient-glow-top-right" />
-      <div className="ambient-glow-bottom" />
+      {/* Background colors and falling color particles animation */}
+      <FallingColorBackground />
 
       {/* Main Glassmorphism Application Canvas */}
       <div className="app-window">
