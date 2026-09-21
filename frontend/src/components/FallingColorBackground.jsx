@@ -1,27 +1,85 @@
 import React from 'react';
 
-// Pre-defined particles with rich color palettes, sizes, positions, delays and durations
-const PARTICLES = [
-  { id: 1, left: '3%', size: 30, color: 'radial-gradient(circle, #f59e0b 0%, rgba(245, 158, 11, 0.45) 70%, transparent 100%)', duration: '14s', delay: '-3s', blur: '4px', shadow: '0 0 16px rgba(245, 158, 11, 0.5)' },
-  { id: 2, left: '8%', size: 13, color: 'radial-gradient(circle, #818cf8 0%, rgba(99, 102, 241, 0.65) 80%, transparent 100%)', duration: '11s', delay: '-8s', blur: '1px', shadow: '0 0 12px rgba(99, 102, 241, 0.6)' },
-  { id: 3, left: '13%', size: 46, color: 'radial-gradient(circle, #fb7185 0%, rgba(244, 63, 94, 0.4) 70%, transparent 100%)', duration: '19s', delay: '-1s', blur: '8px', shadow: '0 0 20px rgba(244, 63, 94, 0.45)' },
-  { id: 4, left: '18%', size: 16, color: 'radial-gradient(circle, #38bdf8 0%, rgba(6, 182, 212, 0.55) 80%, transparent 100%)', duration: '12s', delay: '-6s', blur: '2px', shadow: '0 0 14px rgba(6, 182, 212, 0.5)' },
-  { id: 5, left: '24%', size: 38, color: 'radial-gradient(circle, #34d399 0%, rgba(16, 185, 129, 0.4) 70%, transparent 100%)', duration: '17s', delay: '-11s', blur: '6px', shadow: '0 0 18px rgba(16, 185, 129, 0.4)' },
-  { id: 6, left: '30%', size: 11, color: 'radial-gradient(circle, #c084fc 0%, rgba(168, 85, 247, 0.65) 80%, transparent 100%)', duration: '10s', delay: '-4s', blur: '1px', shadow: '0 0 12px rgba(168, 85, 247, 0.6)' },
-  { id: 7, left: '36%', size: 54, color: 'radial-gradient(circle, #fcd34d 0%, rgba(245, 158, 11, 0.35) 70%, transparent 100%)', duration: '22s', delay: '-14s', blur: '12px', shadow: '0 0 24px rgba(245, 158, 11, 0.4)' },
-  { id: 8, left: '42%', size: 15, color: 'radial-gradient(circle, #f43f5e 0%, rgba(244, 63, 94, 0.55) 80%, transparent 100%)', duration: '13s', delay: '-9s', blur: '2px', shadow: '0 0 14px rgba(244, 63, 94, 0.55)' },
-  { id: 9, left: '48%', size: 34, color: 'radial-gradient(circle, #6366f1 0%, rgba(99, 102, 241, 0.4) 70%, transparent 100%)', duration: '16s', delay: '-2s', blur: '5px', shadow: '0 0 18px rgba(99, 102, 241, 0.45)' },
-  { id: 10, left: '54%', size: 18, color: 'radial-gradient(circle, #2dd4bf 0%, rgba(20, 184, 166, 0.55) 80%, transparent 100%)', duration: '12s', delay: '-7s', blur: '2px', shadow: '0 0 14px rgba(20, 184, 166, 0.5)' },
-  { id: 11, left: '60%', size: 44, color: 'radial-gradient(circle, #e879f9 0%, rgba(217, 70, 239, 0.4) 70%, transparent 100%)', duration: '18s', delay: '-13s', blur: '8px', shadow: '0 0 20px rgba(217, 70, 239, 0.45)' },
-  { id: 12, left: '66%', size: 12, color: 'radial-gradient(circle, #fbbf24 0%, rgba(245, 158, 11, 0.65) 80%, transparent 100%)', duration: '11s', delay: '-5s', blur: '1px', shadow: '0 0 12px rgba(245, 158, 11, 0.6)' },
-  { id: 13, left: '72%', size: 40, color: 'radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0.4) 70%, transparent 100%)', duration: '17s', delay: '-10s', blur: '7px', shadow: '0 0 18px rgba(56, 189, 248, 0.45)' },
-  { id: 14, left: '78%', size: 16, color: 'radial-gradient(circle, #f43f5e 0%, rgba(244, 63, 94, 0.55) 80%, transparent 100%)', duration: '13s', delay: '-3s', blur: '2px', shadow: '0 0 14px rgba(244, 63, 94, 0.55)' },
-  { id: 15, left: '84%', size: 50, color: 'radial-gradient(circle, #a855f7 0%, rgba(168, 85, 247, 0.4) 70%, transparent 100%)', duration: '20s', delay: '-15s', blur: '10px', shadow: '0 0 22px rgba(168, 85, 247, 0.45)' },
-  { id: 16, left: '90%', size: 16, color: 'radial-gradient(circle, #10b981 0%, rgba(16, 185, 129, 0.55) 80%, transparent 100%)', duration: '12s', delay: '-8s', blur: '2px', shadow: '0 0 14px rgba(16, 185, 129, 0.5)' },
-  { id: 17, left: '95%', size: 32, color: 'radial-gradient(circle, #f59e0b 0%, rgba(245, 158, 11, 0.45) 70%, transparent 100%)', duration: '15s', delay: '-4s', blur: '5px', shadow: '0 0 16px rgba(245, 158, 11, 0.5)' },
-  { id: 18, left: '6%', size: 24, color: 'radial-gradient(circle, #ec4899 0%, rgba(236, 72, 153, 0.5) 80%, transparent 100%)', duration: '14s', delay: '-12s', blur: '3px', shadow: '0 0 16px rgba(236, 72, 153, 0.5)' },
-  { id: 19, left: '50%', size: 22, color: 'radial-gradient(circle, #06b6d4 0%, rgba(6, 182, 212, 0.55) 80%, transparent 100%)', duration: '13s', delay: '-11s', blur: '3px', shadow: '0 0 14px rgba(6, 182, 212, 0.5)' },
-  { id: 20, left: '81%', size: 26, color: 'radial-gradient(circle, #eab308 0%, rgba(234, 179, 8, 0.5) 80%, transparent 100%)', duration: '15s', delay: '-6s', blur: '4px', shadow: '0 0 16px rgba(234, 179, 8, 0.5)' },
+// Cascading fluid wave ribbons with individual gradients, paths, speeds, and staggered delays
+const WAVES = [
+  {
+    id: 'wave-amber',
+    gradientId: 'grad-amber',
+    stop1: '#f59e0b',
+    stop2: '#fbbf24',
+    stop3: 'rgba(245, 158, 11, 0)',
+    opacity: 0.55,
+    duration: '16s',
+    delay: '0s',
+    blur: '18px',
+    height: 440,
+    path: 'M0,100 C360,220, 680,20, 1020,160 C1340,290, 1560,70, 1800,180 L1800,480 L0,480 Z',
+  },
+  {
+    id: 'wave-indigo',
+    gradientId: 'grad-indigo',
+    stop1: '#6366f1',
+    stop2: '#a855f7',
+    stop3: 'rgba(99, 102, 241, 0)',
+    opacity: 0.52,
+    duration: '21s',
+    delay: '-5s',
+    blur: '24px',
+    height: 480,
+    path: 'M0,140 C280,30, 590,240, 920,80 C1220,-30, 1520,220, 1800,110 L1800,520 L0,520 Z',
+  },
+  {
+    id: 'wave-cyan',
+    gradientId: 'grad-cyan',
+    stop1: '#06b6d4',
+    stop2: '#3b82f6',
+    stop3: 'rgba(6, 182, 212, 0)',
+    opacity: 0.48,
+    duration: '18s',
+    delay: '-10s',
+    blur: '20px',
+    height: 420,
+    path: 'M0,80 C340,230, 640,40, 960,170 C1280,310, 1560,90, 1800,140 L1800,460 L0,460 Z',
+  },
+  {
+    id: 'wave-rose',
+    gradientId: 'grad-rose',
+    stop1: '#f43f5e',
+    stop2: '#ec4899',
+    stop3: 'rgba(244, 63, 94, 0)',
+    opacity: 0.50,
+    duration: '24s',
+    delay: '-15s',
+    blur: '22px',
+    height: 460,
+    path: 'M0,160 C320,50, 620,260, 940,110 C1260,-40, 1540,190, 1800,160 L1800,500 L0,500 Z',
+  },
+  {
+    id: 'wave-emerald',
+    gradientId: 'grad-emerald',
+    stop1: '#10b981',
+    stop2: '#14b8a6',
+    stop3: 'rgba(16, 185, 129, 0)',
+    opacity: 0.45,
+    duration: '19s',
+    delay: '-8s',
+    blur: '26px',
+    height: 450,
+    path: 'M0,110 C380,20, 710,230, 1040,80 C1360,-60, 1600,180, 1800,130 L1800,470 L0,470 Z',
+  },
+  {
+    id: 'wave-gold',
+    gradientId: 'grad-gold',
+    stop1: '#eab308',
+    stop2: '#fb923c',
+    stop3: 'rgba(234, 179, 8, 0)',
+    opacity: 0.50,
+    duration: '17s',
+    delay: '-12s',
+    blur: '18px',
+    height: 410,
+    path: 'M0,90 C300,240, 600,50, 920,180 C1240,320, 1550,60, 1800,150 L1800,450 L0,450 Z',
+  },
 ];
 
 export default function FallingColorBackground() {
@@ -34,25 +92,38 @@ export default function FallingColorBackground() {
       <div className="ambient-glow-rose" />
       <div className="ambient-glow-emerald" />
 
-      {/* Floating / Falling Color Particles Container */}
-      <div className="falling-particles-container" aria-hidden="true">
-        {PARTICLES.map((p) => (
+      {/* Cascading Falling Color Waves Container */}
+      <div className="falling-waves-container" aria-hidden="true">
+        {WAVES.map((w) => (
           <div
-            key={p.id}
-            className="falling-drop"
+            key={w.id}
+            className="falling-wave-ribbon"
             style={{
-              left: p.left,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              background: p.color,
-              boxShadow: p.shadow,
-              filter: `blur(${p.blur})`,
-              animationDuration: p.duration,
-              animationDelay: p.delay,
+              height: `${w.height}px`,
+              filter: `blur(${w.blur})`,
+              opacity: w.opacity,
+              animationDuration: w.duration,
+              animationDelay: w.delay,
             }}
-          />
+          >
+            <svg
+              className="wave-svg-graphic"
+              viewBox="0 0 1800 480"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id={w.gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor={w.stop1} stopOpacity="0.85" />
+                  <stop offset="45%" stopColor={w.stop2} stopOpacity="0.5" />
+                  <stop offset="100%" stopColor={w.stop3} stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d={w.path} fill={`url(#${w.gradientId})`} />
+            </svg>
+          </div>
         ))}
       </div>
     </>
   );
 }
+
