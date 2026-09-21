@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import scenarioRoutes from './routes/scenarioRoutes.js';
+import submissionRoutes from './routes/submissionRoutes.js';
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 app.use('/api/scenarios', scenarioRoutes);
+app.use('/api/submissions', submissionRoutes);
 
 // Centralized 404 handler for unknown routes
 app.use(notFoundHandler);
