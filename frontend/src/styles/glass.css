@@ -129,7 +129,7 @@ body {
   100% { transform: scale(0.96) translate(-14px, 16px); opacity: 0.75; }
 }
 
-/* Cascading Falling Color Waves Container & Keyframes */
+/* Cascading Falling Color Waves Container & Multi-directional Physics */
 .falling-waves-container {
   position: fixed;
   top: 0;
@@ -143,14 +143,192 @@ body {
 
 .falling-wave-ribbon {
   position: absolute;
-  top: -500px;
-  left: -12%;
-  width: 124%;
   pointer-events: none;
-  animation-name: cascadeWaveFlow;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
   will-change: transform, opacity;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.35, 0.1, 0.25, 1);
+}
+
+/* 1. Diagonal Flow from Top-Left to Bottom-Right */
+.wave-trajectory-diag-left {
+  top: -460px;
+  left: -35%;
+  width: 165%;
+  transform-origin: top left;
+  animation-name: flowDiagonalLeft;
+}
+
+@keyframes flowDiagonalLeft {
+  0% {
+    transform: translate(-10vw, -10vh) rotate(-18deg) scaleY(0.85);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(15vw, 55vh) rotate(-14deg) scaleY(1.15);
+    opacity: 0.72;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(35vw, 120vh) rotate(-22deg) scaleY(0.9);
+    opacity: 0;
+  }
+}
+
+/* 2. Diagonal Flow from Top-Right to Bottom-Left */
+.wave-trajectory-diag-right {
+  top: -460px;
+  right: -35%;
+  width: 165%;
+  transform-origin: top right;
+  animation-name: flowDiagonalRight;
+}
+
+@keyframes flowDiagonalRight {
+  0% {
+    transform: translate(15vw, -10vh) rotate(20deg) scaleY(0.85);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-15vw, 58vh) rotate(16deg) scaleY(1.12);
+    opacity: 0.72;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-38vw, 122vh) rotate(24deg) scaleY(0.9);
+    opacity: 0;
+  }
+}
+
+/* 3. Wave sweeping in from the Left Flank across the center */
+.wave-trajectory-side-left {
+  top: 10%;
+  left: -48%;
+  width: 175%;
+  transform-origin: center left;
+  animation-name: flowSideLeft;
+}
+
+@keyframes flowSideLeft {
+  0% {
+    transform: translate(-25vw, -15vh) rotate(-12deg) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(18vw, 25vh) rotate(-6deg) scale(1.1);
+    opacity: 0.68;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(60vw, 75vh) rotate(-15deg) scale(0.85);
+    opacity: 0;
+  }
+}
+
+/* 4. Wave sweeping in from the Right Flank */
+.wave-trajectory-side-right {
+  top: 25%;
+  right: -48%;
+  width: 175%;
+  transform-origin: center right;
+  animation-name: flowSideRight;
+}
+
+@keyframes flowSideRight {
+  0% {
+    transform: translate(25vw, -15vh) rotate(15deg) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-20vw, 30vh) rotate(10deg) scale(1.12);
+    opacity: 0.65;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-60vw, 80vh) rotate(18deg) scale(0.85);
+    opacity: 0;
+  }
+}
+
+/* 5. Serpentine S-Curve Cascade from Top-Center */
+.wave-trajectory-serpentine {
+  top: -480px;
+  left: -15%;
+  width: 130%;
+  animation-name: flowSerpentine;
+}
+
+@keyframes flowSerpentine {
+  0% {
+    transform: translateY(-80px) translateX(0) scaleX(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  30% {
+    transform: translateY(32vh) translateX(90px) scaleX(1.06);
+    opacity: 0.78;
+  }
+  65% {
+    transform: translateY(72vh) translateX(-85px) scaleX(0.95);
+    opacity: 0.65;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateY(120vh) translateX(60px) scaleX(1.02);
+    opacity: 0;
+  }
+}
+
+/* 6. Dynamic Deep Cross Drift */
+.wave-trajectory-cross-drift {
+  top: -420px;
+  left: -25%;
+  width: 155%;
+  animation-name: flowCrossDrift;
+}
+
+@keyframes flowCrossDrift {
+  0% {
+    transform: translateY(-50px) translateX(80px) rotate(8deg) scale(0.85);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.82;
+  }
+  50% {
+    transform: translateY(50vh) translateX(-60px) rotate(-4deg) scale(1.08);
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateY(118vh) translateX(70px) rotate(10deg) scale(0.9);
+    opacity: 0;
+  }
 }
 
 .wave-svg-graphic {
@@ -160,36 +338,15 @@ body {
   animation: undulateWave 9s ease-in-out infinite alternate;
 }
 
-@keyframes cascadeWaveFlow {
-  0% {
-    transform: translateY(-80px) scaleY(0.85);
-    opacity: 0;
-  }
-  12% {
-    opacity: 0.85;
-  }
-  50% {
-    transform: translateY(58vh) scaleY(1.12);
-    opacity: 0.75;
-  }
-  85% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(122vh) scaleY(0.9);
-    opacity: 0;
-  }
-}
-
 @keyframes undulateWave {
   0% {
-    transform: translateX(-3%) skewX(-2.5deg) scaleX(0.97);
+    transform: skewX(-3deg) scaleY(0.95);
   }
   50% {
-    transform: translateX(1.8%) skewX(1deg) scaleX(1.03);
+    transform: skewX(2.5deg) scaleY(1.05);
   }
   100% {
-    transform: translateX(3.5%) skewX(2.8deg) scaleX(0.96);
+    transform: skewX(-2deg) scaleY(0.98);
   }
 }
 
