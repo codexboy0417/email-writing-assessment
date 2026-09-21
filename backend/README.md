@@ -1,6 +1,6 @@
 # Email Writing Assessment — Backend API
 
-A lightweight, robust Node.js and Express backend powering the **Email Writing Assessment** web application. Evaluates candidate email submissions using OpenAI Structured Outputs against a professional 5-pillar rubric, accumulates assessment points, and persists attempt history via MongoDB Atlas.
+A lightweight, robust Node.js and Express backend powering the **Email Writing Assessment** web application. Evaluates candidate email submissions using Google Gemini Structured Outputs against a professional 5-pillar rubric, accumulates assessment points, and persists attempt history via MongoDB Atlas.
 
 ---
 
@@ -8,12 +8,12 @@ A lightweight, robust Node.js and Express backend powering the **Email Writing A
 
 1. [Backend Purpose](#1-backend-purpose)
 2. [Assignment Scope & Source Priority](#2-assignment-scope--source-priority)
-3. [Architecture](#3-architecture)
+3. [Architecture (MongoDB + Google Gemini)](#3-architecture-mongodb--google-gemini)
 4. [Folder Structure](#4-folder-structure)
 5. [Installation](#5-installation)
 6. [Environment Variables](#6-environment-variables)
 7. [MongoDB Atlas Setup](#7-mongodb-atlas-setup)
-8. [OpenAI Configuration](#8-openai-configuration)
+8. [Google Gemini Configuration](#8-google-gemini-configuration)
 9. [Seed Command](#9-seed-command)
 10. [Development Server](#10-development-server)
 11. [Production Start](#11-production-start)
@@ -36,11 +36,11 @@ The backend provides a secure REST API for assessing candidates' professional em
 Key functionalities:
 - **No Login / Frictionless Access**: Evaluates anonymous sessions identified by a client-generated `sessionId` (UUID).
 - **Random Scenario Generation**: Retrieves workplace communication scenarios randomly using MongoDB aggregation.
-- **Automated Marking (Auto-marking)**: Scores emails on a 0–100 scale using OpenAI Structured Outputs (strict JSON Schema).
+- **Automated Marking (Auto-marking)**: Scores emails on a 0–100 scale using Google Gemini Structured Outputs (`@google/genai` strict schema).
 - **5-Criterion Evaluation**: Evaluates Subject line, Structure, Content relevance, Tone/Professionalism, and Grammar.
 - **Points Accumulation**: Dynamically sums assessment scores to calculate a candidate's cumulative points.
 - **Actionable Feedback**: Delivers specific strengths and improvement recommendations.
-- **Attempt History**: Stores past submissions for historical review.
+- **Attempt History**: Stores past submissions in MongoDB for historical review.
 
 ---
 
@@ -54,7 +54,7 @@ The authoritative assignment requires:
 4. Auto-marking giving a score out of 100 based on Subject line, Structure, Content, Tone, and Grammar.
 5. Points: every attempt adds its score to the candidate's total points.
 6. Feedback: score, strengths ("what they did well"), and improvements ("what to improve").
-7. Saved results: scores and past attempts are stored.
+7. Saved results: scores and past attempts are stored in MongoDB.
 
 ### Secondary Reference (Priority 2: `Email_Writing_Assessment_Project.pdf`)
 Used only where it helps implement the core assignment:
@@ -70,15 +70,17 @@ Used only where it helps implement the core assignment:
 To keep the backend minimal, clean, and avoid over-engineering, the following items from the secondary document were intentionally excluded:
 - User accounts, passwords, JWT auth, and admin panels.
 - Microservices, Redis, Kafka, WebSockets, background queues, and container orchestration (Kubernetes/ECS).
-- Separate NLTK, LanguageTool, or multi-stage sentiment pipelines (OpenAI Structured Outputs performs deterministic evaluation directly).
+- Separate NLTK, LanguageTool, or multi-stage sentiment pipelines (Gemini Structured Outputs performs deterministic evaluation directly).
 - Sentry, DataDog, or heavy monitoring frameworks.
 
 ---
 
-## 3. Architecture
+## 3. Architecture (MongoDB + Google Gemini)
+
+MongoDB Atlas and Google Gemini are two distinct, decoupled services:
 
 ```
-React Frontend (SPA / Firebase Hosting)
+React Frontend (SPA / Firebase Hosting / AWS)
            │
            │  HTTPS REST API (JSON)
            ▼
@@ -87,13 +89,13 @@ Node.js + Express Backend (AWS EC2 / Server)
       │         │
       │         ▼
       │    MongoDB Atlas (email_writing_assessment)
-      │         ├── scenarios
+      │         ├── scenarios   (writing prompts)
       │         └── submissions (single source of truth for attempts & points)
       │
-      └── Evaluator Service (Strict JSON Schema)
+      └── Evaluator Service (@google/genai SDK)
                 │
                 ▼
-           OpenAI API (gpt-4o-mini / gpt-4o)
+           Google Gemini API (gemini-2.5-flash-lite)
 ```
 
 ---
@@ -116,7 +118,7 @@ backend/
 │   │   ├── resultRoutes.js          # /api/results
 │   │   └── historyRoutes.js         # /api/history
 │   ├── services/
-│   │   ├── evaluator.js             # OpenAI integration with strict schema & prompt injection protection
+│   │   ├── evaluator.js             # Google Gemini integration with strict schema & prompt injection protection
 │   │   └── scoring.js               # Centralized scoring rubric, clamping, and feedback sanitation
 │   ├── middleware/
 │   │   └── errorHandler.js          # Centralized error and 404 response handlers
@@ -161,32 +163,31 @@ Configuration variables:
 | `NODE_ENV` | Runtime environment | `development` or `production` |
 | `MONGODB_URI` | MongoDB connection string (Atlas or local) | `mongodb+srv://user:pass@cluster.mongodb.net/?retryWrites=true&w=majority` |
 | `DATABASE_NAME` | MongoDB database name | `email_writing_assessment` |
-| `OPENAI_API_KEY` | OpenAI API Secret Key | `sk-proj-...` |
-| `OPENAI_MODEL` | OpenAI Model for evaluation | `gpt-4o-mini` |
+| `GEMINI_API_KEY` | Google Gemini API Key | `AIzaSy...` |
+| `GEMINI_MODEL` | Gemini Model for evaluation | `gemini-2.5-flash-lite` |
 | `FRONTEND_URL` | Allowed CORS origin (supports `*` for broad access) | `http://localhost:5173` |
 
-> **Security Note**: Never commit `.env` or expose `OPENAI_API_KEY` to the client.
+> **Security Note**: Never commit `.env` or expose `GEMINI_API_KEY` or `MONGODB_URI` to the client.
 
 ---
 
 ## 7. MongoDB Atlas Setup
 
-1. Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-2. Create a database user with read/write access.
-3. In Network Access, allow your server IP (or `0.0.0.0/0` during development).
-4. Copy the connection string into `MONGODB_URI` in `.env`.
-5. The application will automatically create the database `email_writing_assessment` and the required collections:
+1. Create a cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. In Network Access, allow your server IP (or `0.0.0.0/0` during development).
+3. Set your connection string into `MONGODB_URI` in `.env`.
+4. The application will automatically create the database `email_writing_assessment` and the required collections:
    - `scenarios`: Stores available writing prompts.
    - `submissions`: Stores candidate attempts, scores, and feedback.
 
 ---
 
-## 8. OpenAI Configuration
+## 8. Google Gemini Configuration
 
-1. Obtain an API key from [OpenAI Platform](https://platform.openai.com/api-keys).
-2. Set `OPENAI_API_KEY` in `.env`.
-3. Set `OPENAI_MODEL=gpt-4o-mini` (fast, economical, and highly accurate for rubric evaluation) or `gpt-4o`.
-4. The backend uses the official `openai` SDK with Structured Outputs (`response_format: { type: 'json_schema', ... }`).
+1. Obtain an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Set `GEMINI_API_KEY` in `backend/.env`.
+3. Set `GEMINI_MODEL=gemini-2.5-flash-lite` (default budget-oriented model with high-speed structured output).
+4. The backend uses the official `@google/genai` SDK with strict JSON schema Structured Outputs.
 
 ---
 
@@ -236,7 +237,7 @@ All endpoints return uniform JSON formats.
 }
 ```
 
-**Error (`400`, `403`, `404`, `500`, `503`):**
+**Error (`400`, `403`, `404`, `429`, `500`, `503`):**
 ```json
 {
   "success": false,
@@ -263,7 +264,7 @@ Checks backend health and service readiness.
 ---
 
 ### GET /api/scenarios/random
-Fetches a random email writing scenario for the candidate to solve.
+Fetches a random email writing scenario from MongoDB for the candidate to solve.
 
 **Response (`200 OK`):**
 ```json
@@ -281,7 +282,7 @@ Fetches a random email writing scenario for the candidate to solve.
 ---
 
 ### POST /api/submissions
-Submits an email for AI evaluation and score accumulation.
+Submits an email for Gemini evaluation, backend score calculation, and persistence in MongoDB.
 
 **Request Body:**
 ```json
@@ -439,7 +440,7 @@ npm test
 
 ## 15. AWS Deployment Notes
 
-The backend is configured for cloud deployment (e.g. AWS EC2 / Elastic Beanstalk / Lightsail):
+The backend is configured for cloud deployment (e.g. AWS EC2 / Lightsail):
 
 - **Port Binding**: Respects `process.env.PORT` (defaults to 5000).
 - **Process Management**: Can be managed in production using `pm2`:
