@@ -186,7 +186,7 @@ Configuration variables:
 
 1. Obtain an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 2. Set `GEMINI_API_KEY` in `backend/.env`.
-3. Set `GEMINI_MODEL=gemini-2.5-flash-lite` (default budget-oriented model with high-speed structured output).
+3. Set `GEMINI_MODEL=gemini-3.5-flash-lite` (default budget-oriented model with high-speed structured output).
 4. The backend uses the official `@google/genai` SDK with strict JSON schema Structured Outputs.
 
 ---

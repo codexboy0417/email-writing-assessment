@@ -97,7 +97,7 @@ FEEDBACK REQUIREMENTS:
  */
 export async function evaluateEmail({ scenario, context, category, to, subject, body }) {
   const client = getGeminiClient();
-  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
   const userPrompt = `
 [ASSIGNED SCENARIO]
