@@ -1,0 +1,23 @@
+{
+  "name": "email-writing-assessment-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Email Writing Assessment application",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed/scenarios.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.13.0",
+    "openai": "^4.86.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
