@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getRandomScenario, submitAssessment } from '../services/api.js';
 import { getSessionId } from '../utils/session.js';
-import { RefreshCw, Send, AlertCircle, Sparkles } from 'lucide-react';
+import { RefreshCw, Send, AlertCircle, Sparkles, CheckCircle2, HelpCircle } from 'lucide-react';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,18 +27,17 @@ export default function AssessmentPage({ onSubmitSuccess }) {
     try {
       const data = await getRandomScenario();
       setScenario(data);
-      // Pre-fill a professional sample recipient if relevant to context
       if (data?.category === 'Customer Support') {
         setTo('customer@clientdomain.com');
       } else if (data?.category === 'Workplace Request' || data?.category === 'Status Update') {
         setTo('manager@company.com');
       } else if (data?.category === 'Job Application') {
-        setTo('recruiter@company.com');
+        setTo('interviewer@company.com');
       } else {
         setTo('recipient@organization.com');
       }
     } catch (err) {
-      setError(err.message || 'Failed to load a scenario. Please check your backend connection.');
+      setError(err.message || 'Failed to load scenario. Please check backend connection.');
     } finally {
       setLoadingScenario(false);
     }
@@ -47,15 +46,15 @@ export default function AssessmentPage({ onSubmitSuccess }) {
   function validate() {
     const errs = {};
     if (!to.trim()) {
-      errs.to = 'Recipient email address (To) is required.';
+      errs.to = 'Recipient email (To) is required.';
     } else if (!EMAIL_REGEX.test(to.trim())) {
-      errs.to = 'Please enter a valid email address (e.g. name@company.com).';
+      errs.to = 'Please enter a valid email address.';
     }
 
     if (!subject.trim()) {
       errs.subject = 'Subject line is required.';
     } else if (subject.trim().length > 200) {
-      errs.subject = 'Subject line cannot exceed 200 characters.';
+      errs.subject = 'Subject cannot exceed 200 characters.';
     }
 
     if (!body.trim()) {
@@ -100,44 +99,50 @@ export default function AssessmentPage({ onSubmitSuccess }) {
 
   if (loadingScenario) {
     return (
-      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <RefreshCw size={28} className="animate-spin" color="#4f46e5" style={{ margin: '0 auto 16px' }} />
-        <p style={{ fontSize: '15px', color: 'var(--text-muted)' }}>Retrieving your email scenario...</p>
+      <div style={{ padding: '80px 20px', textAlign: 'center' }}>
+        <RefreshCw size={32} className="animate-spin" color="#f59e0b" style={{ margin: '0 auto 16px' }} />
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)' }}>Retrieving your email scenario from MongoDB...</p>
       </div>
     );
   }
 
+  const wordCount = body.trim().split(/\s+/).filter(Boolean).length;
+
   return (
     <div>
-      {/* Scenario Banner Card */}
+      {/* Scenario Header Panel */}
       {scenario && (
-        <div className="scenario-banner">
+        <div className="glass-panel" style={{ marginBottom: '20px', borderLeft: '4px solid #f59e0b' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
             <div>
-              <span className="category-tag">{scenario.category || 'General Scenario'}</span>
-              <h2 className="scenario-title">{scenario.scenario}</h2>
-              <p className="scenario-context">{scenario.context}</p>
+              <span className="category-badge">{scenario.category}</span>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                {scenario.scenario}
+              </h2>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                {scenario.context}
+              </p>
             </div>
+
             <button
               type="button"
-              className="action-chip glass"
+              className="btn-glass"
               onClick={loadScenario}
               disabled={submitting}
-              title="Load a different random scenario"
               style={{ flexShrink: 0, padding: '6px 14px', fontSize: '12px' }}
             >
               <RefreshCw size={12} />
-              <span>Change Scenario</span>
+              <span>New Scenario</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Error alert if any */}
+      {/* Error Alert */}
       {error && (
         <div style={{
-          background: 'var(--color-danger-bg)',
-          border: '1px solid rgba(239, 68, 68, 0.2)',
+          background: 'rgba(239, 68, 68, 0.08)',
+          border: '1px solid rgba(239, 68, 68, 0.25)',
           borderRadius: '14px',
           padding: '14px 18px',
           marginBottom: '20px',
@@ -152,99 +157,144 @@ export default function AssessmentPage({ onSubmitSuccess }) {
         </div>
       )}
 
-      {/* Email Writing Workspace */}
-      <form onSubmit={handleSubmit} style={{ background: 'var(--glass-card-bg)', padding: '28px', borderRadius: 'var(--radius-card)', border: '1px solid var(--glass-card-border)', boxShadow: 'var(--shadow-card)' }}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="email-to">
-            To <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(Recipient)</span>
-          </label>
-          <input
-            id="email-to"
-            type="email"
-            className="glass-input"
-            placeholder="e.g. manager@company.com"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-            disabled={submitting}
-          />
-          {validationErrors.to && (
-            <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
-              {validationErrors.to}
-            </span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-            <label className="form-label" htmlFor="email-subject" style={{ margin: 0 }}>
-              Subject Line
+      {/* Main Workspace Split: Editor + Checklist Rail */}
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
+        {/* Email Editor Form */}
+        <form onSubmit={handleSubmit} className="glass-panel">
+          <div className="form-group">
+            <label className="form-label" htmlFor="email-to">
+              Recipient Email (To)
             </label>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              {subject.length} / 200 chars
-            </span>
-          </div>
-          <input
-            id="email-subject"
-            type="text"
-            className="glass-input"
-            placeholder="e.g. Request for Time Off - Friday, Oct 24"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            maxLength={200}
-            disabled={submitting}
-          />
-          {validationErrors.subject && (
-            <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
-              {validationErrors.subject}
-            </span>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginBottom: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-            <label className="form-label" htmlFor="email-body" style={{ margin: 0 }}>
-              Email Body
-            </label>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              {body.trim().split(/\s+/).filter(Boolean).length} words
-            </span>
-          </div>
-          <textarea
-            id="email-body"
-            className="glass-input glass-textarea"
-            placeholder="Write your email here... Remember to include a proper salutation, clear message body, and professional sign-off."
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            disabled={submitting}
-          />
-          {validationErrors.body && (
-            <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
-              {validationErrors.body}
-            </span>
-          )}
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '14px' }}>
-          <button
-            type="submit"
-            className="action-chip primary"
-            disabled={submitting}
-            style={{ padding: '12px 28px', fontSize: '14px', opacity: submitting ? 0.7 : 1 }}
-          >
-            {submitting ? (
-              <>
-                <Sparkles size={16} className="animate-spin" />
-                <span>Evaluating Email with AI...</span>
-              </>
-            ) : (
-              <>
-                <Send size={15} />
-                <span>Submit for Evaluation</span>
-              </>
+            <input
+              id="email-to"
+              type="email"
+              className="glass-input"
+              placeholder="e.g. manager@company.com"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              disabled={submitting}
+            />
+            {validationErrors.to && (
+              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+                {validationErrors.to}
+              </span>
             )}
-          </button>
+          </div>
+
+          <div className="form-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <label className="form-label" htmlFor="email-subject" style={{ margin: 0 }}>
+                Subject Line
+              </label>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                {subject.length} / 200 chars
+              </span>
+            </div>
+            <input
+              id="email-subject"
+              type="text"
+              className="glass-input"
+              placeholder="e.g. Request for a day off next Friday"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              maxLength={200}
+              disabled={submitting}
+            />
+            {validationErrors.subject && (
+              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+                {validationErrors.subject}
+              </span>
+            )}
+          </div>
+
+          <div className="form-group" style={{ marginBottom: '22px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <label className="form-label" htmlFor="email-body" style={{ margin: 0 }}>
+                Email Body
+              </label>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                {wordCount} words
+              </span>
+            </div>
+            <textarea
+              id="email-body"
+              className="glass-input glass-textarea"
+              placeholder="Write your email here... Remember to include greeting, structured paragraphs, and sign-off."
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              disabled={submitting}
+            />
+            {validationErrors.body && (
+              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+                {validationErrors.body}
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '14px' }}>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={submitting}
+              style={{ padding: '12px 28px', opacity: submitting ? 0.7 : 1 }}
+            >
+              {submitting ? (
+                <>
+                  <Sparkles size={16} className="animate-spin" color="#f59e0b" />
+                  <span>Evaluating with Gemini AI...</span>
+                </>
+              ) : (
+                <>
+                  <Send size={15} />
+                  <span>Submit for Evaluation</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Right Rail: Tips & Evaluation Checklist */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="glass-panel" style={{ padding: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: 'var(--text-primary)' }}>
+              <HelpCircle size={17} color="#f59e0b" />
+              <h4 style={{ fontSize: '14px', fontWeight: 700 }}>Evaluation Criteria</h4>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong>Subject Line (20%)</strong>: Concise, clear, and relevant.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong>Structure (15%)</strong>: Salutation, clean paragraphs, professional sign-off.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong>Content (20%)</strong>: Addresses the exact scenario prompt.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong>Tone (25%)</strong>: Courteous, respectful, and appropriate.</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong>Grammar (20%)</strong>: Accurate spelling, syntax, and punctuation.</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '20px', background: '#fef3c7', borderColor: '#fde68a' }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#b45309', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              PRO TIP
+            </span>
+            <p style={{ fontSize: '12.5px', color: '#92400e', lineHeight: '1.5', marginTop: '4px' }}>
+              Always state the specific call-to-action or expected next step in the closing paragraph.
+            </p>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

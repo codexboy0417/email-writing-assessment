@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSessionHistory } from '../services/api.js';
 import { getSessionId } from '../utils/session.js';
-import { Award, Clock, ArrowRight, RefreshCw, Calendar, FileText } from 'lucide-react';
+import { Award, Clock, ArrowRight, RefreshCw, FileText } from 'lucide-react';
 
 export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
   const [history, setHistory] = useState(null);
@@ -28,9 +28,9 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
 
   if (loading) {
     return (
-      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-        <RefreshCw size={28} className="animate-spin" color="#4f46e5" style={{ margin: '0 auto 16px' }} />
-        <p style={{ fontSize: '15px', color: 'var(--text-muted)' }}>Loading your attempt history...</p>
+      <div style={{ padding: '80px 20px', textAlign: 'center' }}>
+        <RefreshCw size={32} className="animate-spin" color="#f59e0b" style={{ margin: '0 auto 16px' }} />
+        <p style={{ fontSize: '15px', color: 'var(--text-muted)' }}>Loading assessment history from MongoDB...</p>
       </div>
     );
   }
@@ -40,149 +40,123 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
 
   return (
     <div>
-      {/* Stats Header Bar */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '16px',
-        marginBottom: '28px'
-      }}>
-        <div style={{
-          background: 'var(--glass-card-bg)',
-          border: '1px solid var(--glass-card-border)',
-          borderRadius: '18px',
-          padding: '20px 24px',
-          boxShadow: 'var(--shadow-card)'
-        }}>
-          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-            Total Attempts
-          </span>
-          <p style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
-            {totalAttempts}
-          </p>
+      {/* 3 KPI Summary Cards */}
+      <div className="kpi-row" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '22px' }}>
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap" style={{ background: '#fef3c7', color: '#d97706' }}>
+            <Award size={22} />
+          </div>
+          <div>
+            <div className="kpi-label">Total Points</div>
+            <div className="kpi-value">{totalPoints} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)' }}>pts</span></div>
+          </div>
         </div>
 
-        <div style={{
-          background: 'var(--glass-card-bg)',
-          border: '1px solid var(--glass-card-border)',
-          borderRadius: '18px',
-          padding: '20px 24px',
-          boxShadow: 'var(--shadow-card)'
-        }}>
-          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-            Cumulative Points
-          </span>
-          <p style={{ fontSize: '28px', fontWeight: 800, color: '#4f46e5', marginTop: '4px' }}>
-            {totalPoints} <span style={{ fontSize: '14px', fontWeight: 600 }}>pts</span>
-          </p>
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap" style={{ background: '#eff6ff', color: '#3b82f6' }}>
+            <FileText size={22} />
+          </div>
+          <div>
+            <div className="kpi-label">Total Attempts</div>
+            <div className="kpi-value">{totalAttempts}</div>
+          </div>
         </div>
 
-        <div style={{
-          background: 'var(--glass-card-bg)',
-          border: '1px solid var(--glass-card-border)',
-          borderRadius: '18px',
-          padding: '20px 24px',
-          boxShadow: 'var(--shadow-card)'
-        }}>
-          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-            Average Score
-          </span>
-          <p style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
-            {avgScore} <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>/ 100</span>
-          </p>
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap" style={{ background: '#ecfdf5', color: '#10b981' }}>
+            <Clock size={22} />
+          </div>
+          <div>
+            <div className="kpi-label">Average Score</div>
+            <div className="kpi-value">{avgScore}%</div>
+          </div>
         </div>
       </div>
 
-      {/* Attempts List */}
-      <div style={{
-        background: 'var(--glass-card-bg)',
-        border: '1px solid var(--glass-card-border)',
-        borderRadius: 'var(--radius-card)',
-        padding: '24px',
-        boxShadow: 'var(--shadow-card)'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
-            Previous Attempts
-          </h3>
-          <button className="action-chip primary" onClick={onStartAssessment} style={{ padding: '8px 18px' }}>
-            <span>New Attempt</span>
+      {/* Main Table Container (Matching reference Employees table) */}
+      <div className="glass-table-wrap">
+        <div className="table-header-row">
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+              Assessment Submission Records
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              Historical performance data associated with your session
+            </p>
+          </div>
+          <button className="btn-primary" onClick={onStartAssessment} style={{ padding: '8px 18px', fontSize: '13px' }}>
+            <span>New Test</span>
             <ArrowRight size={14} />
           </button>
         </div>
 
         {attempts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-            <FileText size={36} color="var(--text-muted)" style={{ margin: '0 auto 12px', opacity: 0.6 }} />
+          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+            <FileText size={36} color="#9ca3af" style={{ margin: '0 auto 12px', opacity: 0.6 }} />
             <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '16px' }}>
               No attempts yet in this browser session.
             </p>
-            <button className="action-chip primary" onClick={onStartAssessment}>
+            <button className="btn-primary" onClick={onStartAssessment}>
               Start Your First Assessment
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {attempts.map((attempt) => {
-              const formattedDate = new Date(attempt.submittedAt).toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              });
+          <table className="glass-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Scenario</th>
+                <th>Subject Line</th>
+                <th>Performance Meter</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {attempts.map((attempt) => {
+                const formattedDate = new Date(attempt.submittedAt).toLocaleDateString(undefined, {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
 
-              return (
-                <div
-                  key={attempt.attemptId}
-                  onClick={() => onSelectAttempt && onSelectAttempt(attempt.attemptId)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '16px 20px',
-                    borderRadius: '14px',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    border: '1px solid rgba(225, 232, 245, 0.8)',
-                    transition: 'all 0.2s',
-                    cursor: onSelectAttempt ? 'pointer' : 'default'
-                  }}
-                  className="attempt-row-hover"
-                >
-                  <div style={{ minWidth: 0, flex: 1, paddingRight: '16px' }}>
-                    <h4 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                      {attempt.scenario}
-                    </h4>
-                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      Subject: {attempt.subject}
-                    </p>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{
-                        display: 'inline-block',
-                        padding: '4px 10px',
-                        borderRadius: '99px',
-                        fontSize: '13px',
-                        fontWeight: 700,
-                        background: attempt.totalScore >= 80 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(79, 70, 229, 0.1)',
-                        color: attempt.totalScore >= 80 ? '#059669' : '#4f46e5'
-                      }}>
-                        {attempt.totalScore} / 100
-                      </span>
-                      <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                        {formattedDate}
-                      </span>
-                    </div>
-
-                    {onSelectAttempt && (
-                      <ArrowRight size={16} color="var(--text-muted)" />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                return (
+                  <tr key={attempt.attemptId}>
+                    <td style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                      #{attempt.attemptId?.slice(-6).toUpperCase()}
+                    </td>
+                    <td style={{ fontWeight: 600 }}>{attempt.scenario}</td>
+                    <td style={{ color: 'var(--text-muted)', maxWidth: '240px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {attempt.subject}
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="progress-track">
+                          <div className="progress-fill-gradient" style={{ width: `${attempt.totalScore}%` }} />
+                        </div>
+                        <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>
+                          {attempt.totalScore}%
+                        </span>
+                      </div>
+                    </td>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '12.5px' }}>
+                      {formattedDate}
+                    </td>
+                    <td>
+                      <button
+                        className="btn-glass"
+                        onClick={() => onSelectAttempt && onSelectAttempt(attempt.attemptId)}
+                        style={{ padding: '4px 10px', fontSize: '12px' }}
+                      >
+                        Details
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

@@ -1,27 +1,53 @@
 import React from 'react';
-import { Award, Mail, Sparkles } from 'lucide-react';
+import { Award, ChevronDown, Sparkles } from 'lucide-react';
+import { getSessionId } from '../utils/session.js';
 
 export default function Header({ totalPoints = 0, currentView = 'landing', onViewChange }) {
+  const sessionId = getSessionId();
+  const shortId = sessionId.slice(0, 6).toUpperCase();
+
+  const getPageTitle = () => {
+    switch (currentView) {
+      case 'assessment':
+        return 'Email Writing Assessment';
+      case 'result':
+        return 'Evaluation Report';
+      case 'history':
+        return 'Candidate Attempts';
+      default:
+        return 'Dashboard';
+    }
+  };
+
   return (
     <header className="top-nav">
-      <div className="nav-pill-badge" onClick={() => onViewChange('landing')} style={{ cursor: 'pointer' }}>
-        <Mail size={16} color="#4f46e5" />
-        <span>Email Evaluator v1.0</span>
-      </div>
+      <h1 className="page-title">{getPageTitle()}</h1>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div className="points-pill" title="Cumulative assessment points accumulated across all your submissions">
+      <div className="header-user-profile">
+        {/* Cumulative Points Badge */}
+        <div className="points-badge-pill" title="Total accumulated points">
           <Award size={15} color="#f59e0b" />
-          <span>{totalPoints} Points</span>
+          <span>{totalPoints} pts</span>
+        </div>
+
+        {/* User / Session Profile Pill (Matching reference Carla Sanford) */}
+        <div className="user-profile-pill">
+          <div className="user-avatar">
+            <span>CA</span>
+          </div>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            Candidate #{shortId}
+          </span>
+          <ChevronDown size={14} color="#9ca3af" />
         </div>
 
         {currentView !== 'assessment' && (
           <button
-            className="action-chip primary"
+            className="btn-primary"
             onClick={() => onViewChange('assessment')}
-            style={{ padding: '8px 18px', fontSize: '13px' }}
+            style={{ padding: '9px 18px', fontSize: '13px' }}
           >
-            <Sparkles size={14} />
+            <Sparkles size={14} color="#f59e0b" />
             <span>New Test</span>
           </button>
         )}

@@ -51,9 +51,9 @@ export default function App() {
 
   return (
     <>
-      {/* Subtle ambient lighting glows */}
-      <div className="ambient-glow-top" />
-      <div className="ambient-glow-bottom" />
+      {/* Warm ambient background lighting matching executive dashboard */}
+      <div className="ambient-glow-left-warm" />
+      <div className="ambient-glow-top-right" />
 
       {/* Main Glassmorphism Application Canvas */}
       <div className="app-window">
