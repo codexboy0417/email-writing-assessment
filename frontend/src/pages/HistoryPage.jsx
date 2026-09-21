@@ -48,7 +48,7 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
           </div>
           <div>
             <div className="kpi-label">Total Points</div>
-            <div className="kpi-value">{totalPoints} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)' }}>pts</span></div>
+            <div className="kpi-value">{totalPoints} <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-muted)' }}>pts</span></div>
           </div>
         </div>
 
@@ -77,14 +77,14 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
       <div className="glass-table-wrap">
         <div className="table-header-row">
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h3 style={{ fontSize: '19px', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
               Assessment Submission Records
             </h3>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginTop: '2px' }}>
               Historical performance data associated with your session
             </p>
           </div>
-          <button className="btn-primary" onClick={onStartAssessment} style={{ padding: '8px 18px', fontSize: '13px' }}>
+          <button className="btn-primary" onClick={onStartAssessment} style={{ padding: '9px 20px', fontSize: '13.5px', fontWeight: 800 }}>
             <span>New Test</span>
             <ArrowRight size={14} />
           </button>
@@ -93,7 +93,7 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
         {attempts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '48px 20px' }}>
             <FileText size={36} color="#9ca3af" style={{ margin: '0 auto 12px', opacity: 0.6 }} />
-            <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '16px' }}>
+            <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '16px' }}>
               No attempts yet in this browser session.
             </p>
             <button className="btn-primary" onClick={onStartAssessment}>
@@ -123,11 +123,11 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
 
                 return (
                   <tr key={attempt.attemptId}>
-                    <td style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                    <td style={{ fontWeight: 800, fontSize: '13.5px', color: 'var(--text-primary)' }}>
                       #{attempt.attemptId?.slice(-6).toUpperCase()}
                     </td>
-                    <td style={{ fontWeight: 600 }}>{attempt.scenario}</td>
-                    <td style={{ color: 'var(--text-muted)', maxWidth: '240px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <td style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-primary)' }}>{attempt.scenario}</td>
+                    <td style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: '13.5px', maxWidth: '240px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {attempt.subject}
                     </td>
                     <td>
@@ -135,19 +135,19 @@ export default function HistoryPage({ onStartAssessment, onSelectAttempt }) {
                         <div className="progress-track">
                           <div className="progress-fill-gradient" style={{ width: `${attempt.totalScore}%` }} />
                         </div>
-                        <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-primary)' }}>
+                        <span style={{ fontWeight: 800, fontSize: '13.5px', color: 'var(--text-primary)' }}>
                           {attempt.totalScore}%
                         </span>
                       </div>
                     </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '12.5px' }}>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
                       {formattedDate}
                     </td>
                     <td>
                       <button
                         className="btn-glass"
                         onClick={() => onSelectAttempt && onSelectAttempt(attempt.attemptId)}
-                        style={{ padding: '4px 10px', fontSize: '12px' }}
+                        style={{ padding: '5px 12px', fontSize: '12.5px', fontWeight: 700 }}
                       >
                         Details
                       </button>

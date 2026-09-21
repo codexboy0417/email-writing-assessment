@@ -116,10 +116,10 @@ export default function AssessmentPage({ onSubmitSuccess }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
             <div>
               <span className="category-badge">{scenario.category}</span>
-              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
+              <h2 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px', letterSpacing: '-0.3px' }}>
                 {scenario.scenario}
               </h2>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+              <p style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 {scenario.context}
               </p>
             </div>
@@ -129,9 +129,9 @@ export default function AssessmentPage({ onSubmitSuccess }) {
               className="btn-glass"
               onClick={loadScenario}
               disabled={submitting}
-              style={{ flexShrink: 0, padding: '6px 14px', fontSize: '12px' }}
+              style={{ flexShrink: 0, padding: '7px 16px', fontSize: '12.5px', fontWeight: 700 }}
             >
-              <RefreshCw size={12} />
+              <RefreshCw size={13} />
               <span>New Scenario</span>
             </button>
           </div>
@@ -150,7 +150,8 @@ export default function AssessmentPage({ onSubmitSuccess }) {
           alignItems: 'center',
           gap: '10px',
           color: 'var(--color-danger)',
-          fontSize: '14px'
+          fontSize: '14px',
+          fontWeight: 600
         }}>
           <AlertCircle size={18} />
           <span>{error}</span>
@@ -175,18 +176,18 @@ export default function AssessmentPage({ onSubmitSuccess }) {
               disabled={submitting}
             />
             {validationErrors.to && (
-              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-danger)', marginTop: '5px', display: 'block' }}>
                 {validationErrors.to}
               </span>
             )}
           </div>
 
           <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <label className="form-label" htmlFor="email-subject" style={{ margin: 0 }}>
                 Subject Line
               </label>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)' }}>
                 {subject.length} / 200 chars
               </span>
             </div>
@@ -201,18 +202,18 @@ export default function AssessmentPage({ onSubmitSuccess }) {
               disabled={submitting}
             />
             {validationErrors.subject && (
-              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-danger)', marginTop: '5px', display: 'block' }}>
                 {validationErrors.subject}
               </span>
             )}
           </div>
 
           <div className="form-group" style={{ marginBottom: '22px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <label className="form-label" htmlFor="email-body" style={{ margin: 0 }}>
                 Email Body
               </label>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)' }}>
                 {wordCount} words
               </span>
             </div>
@@ -225,7 +226,7 @@ export default function AssessmentPage({ onSubmitSuccess }) {
               disabled={submitting}
             />
             {validationErrors.body && (
-              <span style={{ fontSize: '12px', color: 'var(--color-danger)', marginTop: '4px', display: 'block' }}>
+              <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-danger)', marginTop: '5px', display: 'block' }}>
                 {validationErrors.body}
               </span>
             )}
@@ -236,16 +237,16 @@ export default function AssessmentPage({ onSubmitSuccess }) {
               type="submit"
               className="btn-primary"
               disabled={submitting}
-              style={{ padding: '12px 28px', opacity: submitting ? 0.7 : 1 }}
+              style={{ padding: '13px 30px', fontSize: '15px', fontWeight: 800, opacity: submitting ? 0.7 : 1 }}
             >
               {submitting ? (
                 <>
-                  <Sparkles size={16} className="animate-spin" color="#f59e0b" />
+                  <Sparkles size={17} className="animate-spin" color="#f59e0b" />
                   <span>Evaluating with Gemini AI...</span>
                 </>
               ) : (
                 <>
-                  <Send size={15} />
+                  <Send size={16} />
                   <span>Submit for Evaluation</span>
                 </>
               )}
@@ -255,41 +256,41 @@ export default function AssessmentPage({ onSubmitSuccess }) {
 
         {/* Right Rail: Tips & Evaluation Checklist */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div className="glass-panel" style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: 'var(--text-primary)' }}>
-              <HelpCircle size={17} color="#f59e0b" />
-              <h4 style={{ fontSize: '14px', fontWeight: 700 }}>Evaluation Criteria</h4>
+          <div className="glass-panel" style={{ padding: '22px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', color: 'var(--text-primary)' }}>
+              <HelpCircle size={18} color="#f59e0b" />
+              <h4 style={{ fontSize: '15px', fontWeight: 800, letterSpacing: '-0.2px' }}>Evaluation Criteria</h4>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.45' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span><strong>Subject Line (20%)</strong>: Concise, clear, and relevant.</span>
+                <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong style={{ fontWeight: 800, color: 'var(--text-primary)' }}>Subject Line (20%)</strong>: Concise, clear, and relevant.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span><strong>Structure (15%)</strong>: Salutation, clean paragraphs, professional sign-off.</span>
+                <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong style={{ fontWeight: 800, color: 'var(--text-primary)' }}>Structure (15%)</strong>: Salutation, clean paragraphs, professional sign-off.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span><strong>Content (20%)</strong>: Addresses the exact scenario prompt.</span>
+                <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong style={{ fontWeight: 800, color: 'var(--text-primary)' }}>Content (20%)</strong>: Addresses the exact scenario prompt.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span><strong>Tone (25%)</strong>: Courteous, respectful, and appropriate.</span>
+                <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong style={{ fontWeight: 800, color: 'var(--text-primary)' }}>Tone (25%)</strong>: Courteous, respectful, and appropriate.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <CheckCircle2 size={15} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span><strong>Grammar (20%)</strong>: Accurate spelling, syntax, and punctuation.</span>
+                <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span><strong style={{ fontWeight: 800, color: 'var(--text-primary)' }}>Grammar (20%)</strong>: Accurate spelling, syntax, and punctuation.</span>
               </div>
             </div>
           </div>
 
           <div className="glass-panel" style={{ padding: '20px', background: '#fef3c7', borderColor: '#fde68a' }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#b45309', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#b45309', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
               PRO TIP
             </span>
-            <p style={{ fontSize: '12.5px', color: '#92400e', lineHeight: '1.5', marginTop: '4px' }}>
+            <p style={{ fontSize: '13.5px', fontWeight: 600, color: '#92400e', lineHeight: '1.5', marginTop: '6px' }}>
               Always state the specific call-to-action or expected next step in the closing paragraph.
             </p>
           </div>

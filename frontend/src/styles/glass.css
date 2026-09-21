@@ -18,9 +18,9 @@
   --glass-input-bg: rgba(255, 255, 255, 0.48);
   --glass-input-border: rgba(215, 224, 245, 0.7);
   --glass-blur: blur(32px) saturate(190%);
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-muted: #6b7280;
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted: #475569;
   --color-brand: #4f46e5;
   --color-brand-light: #eef2ff;
   --color-accent-gold: #f59e0b;
@@ -147,18 +147,18 @@ body {
 }
 
 .brand-title {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: var(--text-primary);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
 }
 
 .sidebar-section-title {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  color: #64748b;
   margin-bottom: 10px;
   padding-left: 10px;
 }
@@ -174,13 +174,13 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 11px 14px;
   border-radius: 12px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
@@ -234,10 +234,10 @@ body {
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 800;
+  font-size: 30px;
+  font-weight: 900;
   color: var(--text-primary);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.7px;
 }
 
 .header-user-profile {
@@ -268,21 +268,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .points-badge-pill {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  background: #111827;
+  padding: 7px 16px;
+  background: #0f172a;
   color: #ffffff;
   border-radius: var(--radius-pill);
-  font-size: 13px;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.15);
+  font-size: 13.5px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
 /* KPI Summary Cards Row (Matching reference) */
@@ -325,15 +325,17 @@ body {
 
 .kpi-label {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
-  text-transform: capitalize;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .kpi-value {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 900;
   color: var(--text-primary);
+  letter-spacing: -0.5px;
   margin-top: 2px;
 }
 
@@ -375,13 +377,14 @@ body {
 }
 
 .dark-card-title {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: #ffffff;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
+  letter-spacing: -0.2px;
 }
 
 .rubric-pill-list {
@@ -394,19 +397,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 13px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13.5px;
+  font-weight: 700;
 }
 
 .rubric-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 9px;
 }
 
 /* White Glass Card */
@@ -416,7 +420,7 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-card-border);
   border-radius: var(--radius-card);
-  padding: 24px;
+  padding: 26px;
   box-shadow: var(--shadow-card);
 }
 
@@ -425,14 +429,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: var(--radius-pill);
   background: #fef3c7;
   color: #b45309;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   margin-bottom: 12px;
 }
 
@@ -443,7 +447,7 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-card-border);
   border-radius: var(--radius-card);
-  padding: 22px 24px;
+  padding: 24px 26px;
   box-shadow: var(--shadow-card);
 }
 
@@ -451,7 +455,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .glass-table {
@@ -461,20 +465,21 @@ body {
 
 .glass-table th {
   text-align: left;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-  padding: 10px 14px;
-  border-bottom: 1px solid rgba(228, 233, 246, 0.8);
+  letter-spacing: 0.8px;
+  color: #475569;
+  padding: 12px 16px;
+  border-bottom: 2px solid rgba(220, 228, 245, 0.9);
 }
 
 .glass-table td {
-  padding: 14px;
-  font-size: 13.5px;
-  color: var(--text-secondary);
-  border-bottom: 1px solid rgba(228, 233, 246, 0.5);
+  padding: 15px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  border-bottom: 1px solid rgba(228, 233, 246, 0.6);
 }
 
 .glass-table tr:last-child td {
@@ -488,8 +493,8 @@ body {
 /* Score Progress Meter */
 .progress-track {
   width: 100px;
-  height: 7px;
-  background: #e5e7eb;
+  height: 8px;
+  background: #e2e8f0;
   border-radius: 99px;
   overflow: hidden;
   display: inline-block;
@@ -508,36 +513,37 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 22px;
-  background: #111827;
+  padding: 12px 24px;
+  background: #0f172a;
   color: #ffffff;
   border-radius: var(--radius-pill);
-  font-size: 13.5px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
   border: none;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.18);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.22);
 }
 
 .btn-primary:hover {
-  background: #1f2937;
+  background: #1e293b;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.25);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28);
 }
 
 .btn-glass {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
+  padding: 10px 20px;
   background: rgba(255, 255, 255, 0.50);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  color: var(--text-primary);
+  color: #0f172a;
   border-radius: var(--radius-pill);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 12px rgba(80, 95, 140, 0.05), 0 1px 1px rgba(255, 255, 255, 0.9) inset;
   cursor: pointer;
@@ -557,12 +563,12 @@ body {
 
 .form-label {
   display: block;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.6px;
 }
 
 .glass-input {
@@ -574,7 +580,8 @@ body {
   border: 1px solid var(--glass-input-border);
   border-radius: var(--radius-input);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 14.5px;
+  font-weight: 500;
   color: var(--text-primary);
   outline: none;
   transition: all 0.2s ease;
@@ -590,7 +597,8 @@ body {
 .glass-textarea {
   min-height: 200px;
   resize: vertical;
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 14.5px;
 }
 
 /* Score Breakdown Grid */
@@ -607,15 +615,16 @@ body {
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid var(--glass-card-border);
   border-radius: 14px;
-  padding: 16px;
+  padding: 18px 14px;
   text-align: center;
   box-shadow: var(--shadow-card);
 }
 
 .score-num {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 900;
   color: var(--text-primary);
+  letter-spacing: -0.6px;
 }
 
 /* Responsive Media Queries */

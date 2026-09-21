@@ -46,39 +46,40 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div style={{
-            width: '92px',
-            height: '92px',
+            width: '98px',
+            height: '98px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 10px 25px -4px rgba(17, 24, 39, 0.3)',
-            border: '2px solid rgba(245, 158, 11, 0.4)'
+            boxShadow: '0 10px 25px -4px rgba(15, 23, 42, 0.35)',
+            border: '2.5px solid rgba(245, 158, 11, 0.5)'
           }}>
-            <span style={{ fontSize: '32px', fontWeight: 800, lineHeight: 1, color: '#f59e0b' }}>{totalScore}</span>
-            <span style={{ fontSize: '10px', opacity: 0.8, fontWeight: 700 }}>OUT OF 100</span>
+            <span style={{ fontSize: '38px', fontWeight: 900, lineHeight: 1, color: '#f59e0b', letterSpacing: '-0.8px' }}>{totalScore}</span>
+            <span style={{ fontSize: '10.5px', opacity: 0.9, fontWeight: 800, letterSpacing: '0.8px', marginTop: '2px' }}>OUT OF 100</span>
           </div>
 
           <div>
             <span style={{
               display: 'inline-block',
-              padding: '4px 12px',
+              padding: '5px 14px',
               borderRadius: '99px',
-              fontSize: '11.5px',
-              fontWeight: 700,
+              fontSize: '12px',
+              fontWeight: 800,
+              letterSpacing: '0.4px',
               color: badge.color,
               background: badge.bg,
               marginBottom: '6px'
             }}>
               {badge.text}
             </span>
-            <h2 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)' }}>
+            <h2 style={{ fontSize: '26px', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>
               Evaluation Scorecard
             </h2>
-            <p style={{ fontSize: '13.5px', color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>
               +{pointsAdded} points added to your candidate profile
             </p>
           </div>
@@ -90,21 +91,21 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid var(--glass-card-border)',
           borderRadius: '16px',
-          padding: '16px 24px',
+          padding: '18px 26px',
           textAlign: 'right',
           boxShadow: 'var(--shadow-card)'
         }}>
-          <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 700, display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 800, display: 'block', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
             Total Cumulative Points
           </span>
-          <span style={{ fontSize: '26px', fontWeight: 800, color: '#f59e0b' }}>
-            {totalPoints} <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)' }}>pts</span>
+          <span style={{ fontSize: '30px', fontWeight: 900, color: '#f59e0b', letterSpacing: '-0.5px' }}>
+            {totalPoints} <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-muted)' }}>pts</span>
           </span>
         </div>
       </div>
 
       {/* 5-Criteria Cards Grid */}
-      <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+      <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '14px', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
         Pillars Breakdown
       </h3>
       <div className="scores-grid">
@@ -112,13 +113,13 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
           const pct = Math.round((item.score / item.max) * 100);
           return (
             <div key={item.key} className="score-card">
-              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>
                 {item.label}
               </span>
               <div className="score-num">
-                {item.score} <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>/ {item.max}</span>
+                {item.score} <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 700 }}>/ {item.max}</span>
               </div>
-              <div className="progress-track" style={{ width: '100%', marginTop: '8px' }}>
+              <div className="progress-track" style={{ width: '100%', marginTop: '10px' }}>
                 <div className="progress-fill-gradient" style={{ width: `${pct}%` }} />
               </div>
             </div>
@@ -129,14 +130,14 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
       {/* Actionable Feedback Panels */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
         <div className="glass-panel" style={{ borderLeft: '4px solid #10b981' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#059669', marginBottom: '10px' }}>
-            <CheckCircle2 size={18} />
-            <h4 style={{ fontSize: '15px', fontWeight: 700 }}>What You Did Well</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#059669', marginBottom: '12px' }}>
+            <CheckCircle2 size={19} />
+            <h4 style={{ fontSize: '16px', fontWeight: 800 }}>What You Did Well</h4>
           </div>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {feedback.strengths?.map((str, idx) => (
-              <li key={idx} style={{ fontSize: '13.5px', color: 'var(--text-secondary)', display: 'flex', gap: '8px', lineHeight: '1.5' }}>
-                <span style={{ color: '#10b981' }}>✓</span>
+              <li key={idx} style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', gap: '8px', lineHeight: '1.5' }}>
+                <span style={{ color: '#10b981', fontWeight: 800 }}>✓</span>
                 <span>{str}</span>
               </li>
             ))}
@@ -144,14 +145,14 @@ export default function ResultPage({ result, onTryAgain, onViewHistory }) {
         </div>
 
         <div className="glass-panel" style={{ borderLeft: '4px solid #f59e0b' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#d97706', marginBottom: '10px' }}>
-            <AlertTriangle size={18} />
-            <h4 style={{ fontSize: '15px', fontWeight: 700 }}>Areas for Improvement</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#d97706', marginBottom: '12px' }}>
+            <AlertTriangle size={19} />
+            <h4 style={{ fontSize: '16px', fontWeight: 800 }}>Areas for Improvement</h4>
           </div>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {feedback.improvements?.map((imp, idx) => (
-              <li key={idx} style={{ fontSize: '13.5px', color: 'var(--text-secondary)', display: 'flex', gap: '8px', lineHeight: '1.5' }}>
-                <span style={{ color: '#f59e0b' }}>•</span>
+              <li key={idx} style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', gap: '8px', lineHeight: '1.5' }}>
+                <span style={{ color: '#f59e0b', fontWeight: 800 }}>•</span>
                 <span>{imp}</span>
               </li>
             ))}
