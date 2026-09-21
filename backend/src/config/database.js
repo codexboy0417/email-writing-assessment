@@ -1,4 +1,12 @@
+import dns from 'node:dns';
 import { MongoClient } from 'mongodb';
+
+// Ensure robust SRV record resolution across Windows and diverse ISP environments
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
+} catch {
+  // Graceful fallback if custom DNS servers are restricted
+}
 
 let client = null;
 let db = null;
