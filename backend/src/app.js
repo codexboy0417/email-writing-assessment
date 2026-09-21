@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import scenarioRoutes from './routes/scenarioRoutes.js';
 
 const app = express();
 
@@ -29,6 +30,9 @@ app.get('/api/health', (req, res) => {
     message: 'Backend is running'
   });
 });
+
+// API Routes
+app.use('/api/scenarios', scenarioRoutes);
 
 // Centralized 404 handler for unknown routes
 app.use(notFoundHandler);
